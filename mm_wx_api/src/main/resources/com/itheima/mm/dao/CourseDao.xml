@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itheima.mm.dao.CourseDao">
+
+    <select id="findAll" resultType="Course">
+        Select id,IFNULL(icon,"") icon,name title from t_course where isShow = 0
+    </select>
+</mapper>

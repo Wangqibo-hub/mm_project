@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itheima.mm.dao.CatalogDao">
+
+    <select id="findByCourseId" parameterType="WxMember" resultType="Map">
+        select tc.id id, tc.name title,
+        (select COUNT(*) from t_question where catalogId = tc.id) allCount,
+        (select COUNT(*) from tr_member_question where memberId = #{id}
+        and questionId in (select id from t_question where catalogId = tc.id )) finishedCount
+        from t_catalog tc
+        where courseId = #{courseId}
+    </select>
+
+    <select id="findById" parameterType="Map" resultType="Map">
+        select tc.id id, tc.name title,
+        (select COUNT(*) from t_question where catalogId = tc.id) allCount,
+        (select COUNT(*) from tr_member_question where memberId = #{memberId}
+        and questionId in (select id from t_question where catalogId = tc.id )) finishedCount
+        from t_catalog tc
+        where id = #{categoryID}
+    </select>
+
+    <select id="findNameById" parameterType="int" resultType="string">
+        select name from t_catalog where id = #{id}
+    </select>
+</mapper>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itheima.mm.dao.IndustryDao">
+
+    <select id="findAll" resultType="com.itheima.mm.pojo.Industry">
+        select * from t_industry
+    </select>
+
+    <select id="findIndustryListByCompanyId" resultType="com.itheima.mm.pojo.Industry">
+        select id,name from t_industry,
+        (select industryid from tr_company_industry where companyId=#{companyId}) a
+        where id = a.industryid;
+    </select>
+
+</mapper>

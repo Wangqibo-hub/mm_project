@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itheima.mm.dao.CompanyDao">
+
+    <!--方向表的自定义映射-->
+    <resultMap id="industryMap" type="Industry">
+        <id column="id" property="id"></id>
+        <result property="name" column="name"></result>
+        <result property="orderNo" column="orderNo"></result>
+        <result property="remark" column="remark"></result>
+    </resultMap>
+
+    <!--公司表的自定义映射-->
+    <resultMap id="companyMap" type="Company">
+        <id column="cid" property="id"></id>
+        <result property="cityId" column="cityId"></result>
+        <result property="shortName" column="shortName"></result>
+    </resultMap>
+
+    <!--公司表与方向表的关联查询-->
+    <resultMap id="companyListMap" type="Company" extends="companyMap">
+        <!--封装industryList属性-->
+        <collection property="industryList" resultMap="industryMap" javaType="list" ofType="Industry"></collection>
+    </resultMap>
+
+    <select id="findAll" resultMap="companyListMap" parameterType="int">
+        select tc.id cid, tc.cityId, tc.shortName, ti.*
+        from t_company tc
+        inner join tr_company_industry tci on tci.companyId = tc.id
+        inner join t_industry ti on ti.id = tci.industryId
+        <where>
+            <if test="state!=null">
+                state = #{state}
+            </if>
+        </where>
+    </select>
+
+    <!--<resultMap id="companyMap" type="Company">
+        <id column="id" property="id"></id>
+        <result property="cityId" column="cityId"></result>
+        &lt;!&ndash;调用外部查询，封装industryList属性&ndash;&gt;
+        <collection property="industryList" column="id" fetchType="lazy"
+                    select="com.itheima.mm.dao.IndustryDao.findIndustryListByCompanyId">
+        </collection>
+    </resultMap>
+
+    <select id="findAll" resultType="Company" resultMap="companyMap">
+        select id,cityId,shortName from t_company;
+    </select>-->
+
+</mapper>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itheima.mm.dao.TagDao">
+
+    <select id="findByQuestionId" resultType="int" parameterType="Tag">
+        select id, name title
+        from t_tag tt, tr_question_tag qt
+        where  tt.id = qt.tagId and qt.questionId = #{questionId}
+    </select>
+
+</mapper>

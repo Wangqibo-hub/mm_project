@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itheima.mm.dao.QuestionDao">
+
+    <resultMap id="QuestionMap" type="Question">
+        <id column="id" property="id"></id>
+
+        <collection property="tags" column="id" fetchType="lazy"
+                    select="com.itheima.mm.dao.TagDao.findByQuestionId">
+        </collection>
+        <collection property="selection" column="id" fetchType="lazy"
+                    select="com.itheima.mm.dao.QuestionItemDao.findByQuestionId">
+        </collection>
+    </resultMap>
+
+    <select id="findList" resultMap="QuestionMap" parameterType="Map">
+        select analysis content, id, difficulty grade, subject title, type, analysisVideo video,
+        '' videoPoster,
+        (select tag from tr_member_question where questionId = tq.id and memberId = #{memberId}) answerTag,
+        (select isFavorite from tr_member_question where questionId = tq.id and memberId =#{memberId} ) isFavorite,
+        IF((select tag from tr_member_question where questionId = tq.id and memberId = #{memberId}) is null, 0, 1) isFinished
+        <if test="categoryKind == 2">
+            ,(select isFamous from t_company where id = #{categoryID}) isFamous
+        </if>
+        from t_question tq
+        <if test="categoryKind == 1">
+            where catalogId = #{categoryID}
+        </if>
+        <if test="categoryKind == 2">
+            where companyId = #{categoryID}
+        </if>
+    </select>
+
+    <select id="findByMemberIdAndQuestionId" parameterType="Map" resultType="Map">
+        select * from tr_member_question
+        where memberId = #{memberId} and questionId = #{id}
+    </select>
+
+    <update id="updateAnswer" parameterType="Map">
+        Update tr_member_question
+        set isFavorite = #{isFavorite},tag = #{tag},answerResult = #{answerResult}
+        where memberId = #{memberId} and questionId = #{id}
+    </update>
+
+    <insert id="addAnswer" parameterType="Map">
+        insert into tr_member_question values
+        (null,#{memberId},#{id},#{isFavorite},#{tag},#{answerResult})
+    </insert>
+</mapper>

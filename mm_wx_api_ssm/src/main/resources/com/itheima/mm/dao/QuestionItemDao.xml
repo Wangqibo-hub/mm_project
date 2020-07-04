@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itheima.mm.dao.QuestionItemDao">
+
+    <select id="findByQuestionId" parameterType="int" resultType="QuestionItem">
+        select '' code,id,isRight,content title
+        from t_question_item
+        where questionId = #{questionId}
+    </select>
+
+</mapper>
