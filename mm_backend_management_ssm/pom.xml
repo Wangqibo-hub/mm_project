@@ -27,7 +27,7 @@
         <okio.version>1.4.0</okio.version>
         <bcprov-jdk16.version>1.45</bcprov-jdk16.version>
         <jedis.version>2.7.0</jedis.version>
-        <spring.version>5.0.2.RELEASE</spring.version>
+        <spring.version>5.2.20.RELEASE</spring.version>
     </properties>
     <dependencies>
 
